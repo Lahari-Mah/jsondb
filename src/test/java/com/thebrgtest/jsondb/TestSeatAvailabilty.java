@@ -1,5 +1,6 @@
 package com.thebrgtest.jsondb;
 
+import com.thebrgtest.jsondb.controller.OffsetBasedPageRequest;
 import com.thebrgtest.jsondb.repository.InputSeatProjection;
 import com.thebrgtest.jsondb.service.InputService;
 import org.junit.Assert;
@@ -36,12 +37,9 @@ public class TestSeatAvailabilty {
     @Test
     public void TestSeatAvailByProductType(){
         log.info("...Seat Availability Check with Product Id and Type Id....");
-        Pageable pageRequest = PageRequest.of(1,
-                10,
-                Sort.by(Sort.Direction.DESC, "event_id")
-        );
-        List<InputSeatProjection> seatAvailable = new ArrayList<InputSeatProjection>();
-        inputService.findByProductIdAndTypeId(11L,12L,null)
+        Pageable pageable = new OffsetBasedPageRequest(10, 0);
+        List<InputSeatProjection> seatAvailable = new ArrayList<>();
+        inputService.findByProductIdAndTypeId(11L,12L,pageable)
                         .forEach(seatAvailable::add);
 
         Assert.assertNotNull(seatAvailable);
@@ -51,16 +49,13 @@ public class TestSeatAvailabilty {
     @Test
     public void TestSeatAvailByStartEndDate() throws ParseException {
         log.info("...Seat Availability Check with Time....");
-        Pageable pageRequest = PageRequest.of(1,
-                10,
-                Sort.by(Sort.Direction.DESC, "seats_available")
-        );
+        Pageable pageable = new OffsetBasedPageRequest(10, 0);
         DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         Date stDate = dateFormatter.parse("2020-12-11");
         Date edDate = dateFormatter.parse("2020-12-19");
 
-        List<InputSeatProjection> seatAvailable = new ArrayList<InputSeatProjection>();
-        inputService.findByTime(stDate,edDate,null)
+        List<InputSeatProjection> seatAvailable = new ArrayList<>();
+        inputService.findByTime(stDate,edDate,pageable)
                 .forEach(seatAvailable::add);
 
         Assert.assertNotNull(seatAvailable);
@@ -87,14 +82,9 @@ public class TestSeatAvailabilty {
     @Test
     public void TestSeatAvailByAll(){
         log.info("...Seat Availability Check with All params....");
-        Pageable pageRequest = PageRequest.of(1,
-                10,
-                Sort.by(Sort.Direction.DESC, "seats_available")
-        );
         Date stDate = new Date(2020-12-11);
         Date edDate = new Date(2020-12-19);
-        List<InputSeatProjection> seatAvailable= (List<InputSeatProjection>)
-                inputService.findByAllParams(214L,218L,stDate,edDate,null);
+        List<InputSeatProjection> seatAvailable= inputService.findByAllParams(214L,218L,stDate,edDate,null);
 
         Assert.assertNotNull(seatAvailable);
         Assert.assertEquals(seatAvailable,"2");

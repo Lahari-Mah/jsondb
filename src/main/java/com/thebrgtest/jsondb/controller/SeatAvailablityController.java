@@ -34,7 +34,7 @@ public class SeatAvailablityController {
     private InputService inputService;
     List<InputSeatProjection> inputs;
 
-    Pageable pageRequest = null;
+    Pageable pageable = new OffsetBasedPageRequest(10, 0);
 
     public SeatAvailablityController(InputService inputService) {
         this.inputService = inputService;
@@ -57,8 +57,8 @@ public class SeatAvailablityController {
                                               Long productId, @RequestParam(required = false)
                                              Long typeId) {
         try {
-            inputs = new ArrayList<InputSeatProjection>();
-            inputService.findByProductIdAndTypeId(productId,typeId, null).forEach(inputs::add);
+            inputs = new ArrayList<>();
+            inputService.findByProductIdAndTypeId(productId,typeId, pageable).forEach(inputs::add);
 
             /*Optional<InputSeatProjection> inputData =
                     inputService.findByProductIdAndTypeId(productId,typeId);
@@ -87,8 +87,8 @@ public class SeatAvailablityController {
             @RequestParam(required = false)
                     Date endDate) {
         try {
-            inputs = new ArrayList<InputSeatProjection>();
-            inputService.findByTime(startDate,endDate,null).forEach(inputs::add);
+            inputs = new ArrayList<>();
+            inputService.findByTime(startDate,endDate,pageable).forEach(inputs::add);
 
             if (inputs.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -117,7 +117,7 @@ public class SeatAvailablityController {
                             Date endDate) {
         try {
 
-            inputs = new ArrayList<InputSeatProjection>();
+            inputs = new ArrayList<>();
             inputService.findByAllParams(productId,typeId,startDate,endDate,null).forEach(inputs::add);
 
             if (inputs.isEmpty()) {

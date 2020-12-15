@@ -38,17 +38,17 @@ public class InputService {
         return inputRepository.findByProductIdAndTypeId(productId,typeId);
     }*/
 
-    public List<InputSeatProjection> findByProductIdAndTypeId(Long productId,Long typeId,Pageable pageRequest){
-        return inputRepository.findByProductIdAndTypeId(productId,typeId,pageRequest);
+    public List<InputSeatProjection> findByProductIdAndTypeId(Long productId,Long typeId,Pageable pageable){
+        return inputRepository.findByProductIdAndTypeId(productId,typeId,pageable);
     }
 
-    public List<InputSeatProjection> findByTime(Date startDate, Date endDate,Pageable pageRequest){
-        return inputRepository.findByTime(startDate,endDate,pageRequest);
+    public List<InputSeatProjection> findByTime(Date startDate, Date endDate,Pageable pageable){
+        return inputRepository.findByTime(startDate,endDate,pageable);
     }
 
     public List<InputSeatProjection> findByAllParams(Long productId,Long typeId,
-                                                     Date startDate, Date endDate,Pageable pageRequest){
-        return inputRepository.findByAllParams(productId,typeId,startDate,endDate,pageRequest);
+                                                     Date startDate, Date endDate,Pageable pageable){
+        return inputRepository.findByAllParams(productId,typeId,startDate,endDate,pageable);
     }
 
     public Input save(Input input){
